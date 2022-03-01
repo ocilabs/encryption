@@ -10,6 +10,7 @@ terraform {
   }
 }
 
+locals {}
 
 // Define the wait state for the data requests
 resource "null_resource" "previous" {}

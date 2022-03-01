@@ -11,13 +11,6 @@ variable "input" {
     description = "Resources identifier from resident module"
 }
 
-variable "assets" {
-  type = object({
-    resident = any
-  })
-  description = "Retrieve asset identifier"
-}
-
 variable "tenancy" {
   type = object({
     id      = string,
@@ -26,6 +19,14 @@ variable "tenancy" {
     region  = map(string)
   })
   description = "Tenancy Configuration"
+}
+
+variable "assets" {
+  type = object({
+    resident = any
+    network  = any
+  })
+  description = "Retrieve asset identifier"
 }
 
 variable "resident" {
