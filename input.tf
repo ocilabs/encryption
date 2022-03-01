@@ -3,12 +3,10 @@
 
 variable "input" {
     type = object({
-      internet = string,
-      nat      = string,
-      ipv6     = bool,
-      osn      = string
+      type    = string,
+      message = string
     })
-    description = "Resources identifier from resident module"
+    description = "Schema input for the wallet creation"
 }
 
 variable "tenancy" {
@@ -62,4 +60,16 @@ variable "network" {
     security_lists = any
   })
   description = "Network Configuration"
+}
+
+variable "wallet" {
+  type = object({
+    name         = string,
+    display_name = string,
+    compartment  = string,
+    stage        = number,
+    algorithm    = string,
+    length       = string
+  })
+  description = "Wallet Configuration"
 }

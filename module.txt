@@ -1,0 +1,27 @@
+// Copyright (c) 2020 Oracle and/or its affiliates.
+// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+// --- wallet configuration --- //
+module "encryption" {
+  source = "github.com/ocilabs/encryption"
+  depends_on = [module.configuration, module.resident, module.network]
+  providers = {oci = oci.service}
+  for_each  = {for wallet in local.wallets : wallet.name => wallet}
+  tenancy   = module.configuration.tenancy
+  resident  = module.configuration.resident
+  network   = module.configuration.network["core"]
+  wallet    = module.configuration.wallet[each.key]
+  input = {
+      type = "DEFAULT"  #Selection between "DEFAULT" and "VIRTUAL_PRIVATE"
+  }
+  assets = {
+    resident = module.resident
+    network  = module.network
+  }
+}
+output "wallet" {
+  value = {
+    for resource, parameter in module.encryption : resource => parameter
+    }
+}
+// --- wallet configuration --- //
