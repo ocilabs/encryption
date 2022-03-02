@@ -4,19 +4,18 @@
 // --- wallet configuration --- //
 module "encryption" {
   source = "github.com/ocilabs/encryption"
-  depends_on = [module.configuration, module.resident, module.network]
+  depends_on = [module.configuration, module.resident]
   providers = {oci = oci.service}
-  for_each  = {for wallet in local.wallets : wallet.name => wallet}
   tenancy   = module.configuration.tenancy
   resident  = module.configuration.resident
-  network   = module.configuration.network["core"]
-  wallet    = module.configuration.wallet[each.key]
+  wallet    = module.configuration.wallet
   input = {
-      type = "DEFAULT"  #Selection between "DEFAULT" and "VIRTUAL_PRIVATE"
+    type   = "DEFAULT"  #Selection between "DEFAULT" and "VIRTUAL_PRIVATE"
+    secret = var.secret_name
+    phrase = var.secret_phrase
   }
   assets = {
     resident = module.resident
-    network  = module.network
   }
 }
 output "wallet" {

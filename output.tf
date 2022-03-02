@@ -17,5 +17,9 @@ output "key_id" {
 }
 
 output "wallet_signature" {
-  value = oci_kms_sign.wallet.signature
+  value = length(oci_kms_sign.wallet) > 0 ? oci_kms_sign.wallet.signature : null
+}
+
+output "secret_id" {
+  value = length(oci_vault_secret.wallet) > 0 ? oci_vault_secret.wallet.id : null
 }

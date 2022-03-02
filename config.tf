@@ -18,6 +18,30 @@ data "oci_identity_compartments" "security" {
   state          = "ACTIVE"
 }
 
+data "oci_vault_secrets" "wallet" {
+  depends_on     = [oci_kms_vault.wallet]
+  compartment_id = data.oci_identity_compartments.security.compartments[0].id
+  state          = "ACTIVE"
+  vault_id       = oci_kms_vault.wallet.id
+}
+
+data "oci_vault_secret" "wallet" {
+  depends_on = [oci_kms_key.wallet]
+  secret_id  = oci_vault_secret.wallet.id
+}
+
+data "oci_secrets_secretbundle_versions" "wallet" {
+  depends_on = [oci_kms_key.wallet]
+  secret_id  = oci_vault_secret.wallet.id
+}
+
+// Get Secret content
+data "oci_secrets_secretbundle" "wallet" {
+  depends_on = [oci_kms_key.wallet]
+  secret_id  = oci_vault_secret.wallet.id
+  stage      = "CURRENT"
+}
+
 locals {}
 
 // Define the wait state for the data requests
