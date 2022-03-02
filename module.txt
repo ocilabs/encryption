@@ -21,6 +21,6 @@ module "encryption" {
 output "wallet" {
   value = {
     for resource, parameter in module.encryption : resource => parameter
-    }
+  }
 }
 // --- wallet configuration --- //
