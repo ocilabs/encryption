@@ -24,7 +24,7 @@ resource "oci_kms_key" "wallet" {
 }
 
 resource "oci_kms_sign" "wallet" {
-  depends_on        = [oci_kms_vault.wallet, oci_kms_key]
+  depends_on        = [oci_kms_vault.wallet, oci_kms_key.wallet]
   crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
   key_id            = oci_kms_key.wallet.id
   message           = var.encryption.signature.message
@@ -33,7 +33,7 @@ resource "oci_kms_sign" "wallet" {
 }
 
 resource "oci_kms_verify" "wallet" {
-  depends_on        = [oci_kms_vault.wallet, oci_kms_key, oci_kms_sign.wallet]
+  depends_on        = [oci_kms_vault.wallet, oci_kms_key.wallet, oci_kms_sign.wallet]
   crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
   key_id            = oci_kms_key.wallet.id
   message           = var.encryption.signature.message
@@ -43,7 +43,7 @@ resource "oci_kms_verify" "wallet" {
 }
 
 resource "oci_vault_secret" "wallet" {
-  depends_on = [oci_kms_vault.wallet, oci_kms_key, oci_kms_sign.wallet, oci_kms_verify.wallet]
+  depends_on = [oci_kms_vault.wallet, oci_kms_key.wallet, oci_kms_sign.wallet, oci_kms_verify.wallet]
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   secret_name    = "${oci_vault_secret.wallet.name}_${var.input.secret}"
   vault_id       = oci_kms_vault.wallet.id
