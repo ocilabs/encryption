@@ -28,7 +28,7 @@ resource "oci_kms_sign" "wallet" {
   crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
   key_id            = oci_kms_key.wallet.id
   key_version_id    = data.oci_kms_key_versions.wallet.key_versions[0].id
-  message           = var.encryption.signature.message
+  message           = base64encode(var.encryption.signature.message)
   signing_algorithm = var.encryption.signature.algorithm
   message_type      = var.encryption.signature.type
 }
