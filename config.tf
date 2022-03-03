@@ -30,6 +30,7 @@ data "oci_vault_secret" "wallet" {
   secret_id  = oci_vault_secret.wallet.id
 }
 
+/*
 data "oci_secrets_secretbundle_versions" "wallet" {
   depends_on = [oci_kms_key.wallet]
   secret_id  = oci_vault_secret.wallet.id
@@ -41,6 +42,7 @@ data "oci_secrets_secretbundle" "wallet" {
   secret_id  = oci_vault_secret.wallet.id
   stage      = "CURRENT"
 }
+*/
 
 data "oci_kms_key_versions" "wallet" {
     depends_on          = [oci_kms_key.wallet]
