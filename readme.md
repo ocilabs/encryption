@@ -61,8 +61,6 @@ output "wallet" {
 | <a name="input_tenancy"></a> [tenancy](#input\_tenancy) | Tenancy Configuration | <pre>object({<br>    id      = string,<br>    class   = number,<br>    buckets = string,<br>    region  = map(string)<br>  })</pre> | n/a | yes |
 | <a name="input_assets"></a> [assets](#input\_assets) | Retrieve asset identifier | <pre>object({<br>    resident = any<br>    network  = any<br>  })</pre> | n/a | yes |
 | <a name="input_resident"></a> [resident](#input\_resident) | Service configuration | <pre>object({<br>    owner          = string,<br>    name           = string,<br>    label          = string,<br>    stage          = number,<br>    region         = map(string)<br>    compartments   = map(number),<br>    repository     = string,<br>    groups         = map(string),<br>    policies       = map(any),<br>    notifications  = map(any),<br>    tag_namespaces = map(number),<br>    tags           = any<br>  })</pre> | n/a | yes |
-| <a name="input_network"></a> [network](#input\_network) | Creating a network topology for a service resident | <pre>object({<br>    name         = string,<br>    region       = string,<br>    display_name = string,<br>    dns_label    = string,<br>    compartment  = string,<br>    stage        = number,<br>    cidr         = string,<br>    gateways     = any,<br>    route_tables = map(any),<br>    subnets      = map(any),<br>    security_lists = any<br>  })</pre> | n/a | yes |
-| <a name="input_wallet"></a> [wallet](#input\_wallet) | Enabling enryption for a service resident | <pre>object({<br>    compartment = string,<br>    vault       = string,<br>    stage       = number,<br>    key         = map(string),<br>    signature   = map(string),<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
