@@ -46,23 +46,6 @@ variable "resident" {
   description = "Service configuration"
 }
 
-variable "network" {
-  type = object({
-    name         = string,
-    region       = string,
-    display_name = string,
-    dns_label    = string,
-    compartment  = string,
-    stage        = number,
-    cidr         = string,
-    gateways     = any,
-    route_tables = map(any),
-    subnets      = map(any),
-    security_lists = any
-  })
-  description = "Creating a network topology for a service resident"
-}
-
 variable "wallet" {
   type = object({
     compartment = string,
