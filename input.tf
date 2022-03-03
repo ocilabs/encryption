@@ -45,7 +45,7 @@ variable "resident" {
   description = "Service configuration"
 }
 
-variable "wallet" {
+variable "encryption" {
   type = object({
     compartment = string,
     vault       = string,

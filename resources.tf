@@ -3,7 +3,7 @@
 
 resource "oci_kms_vault" "wallet" {
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
-  display_name   = var.wallet.vault
+  display_name   = var.encryption.vault
   vault_type     = var.input.type
   defined_tags   = var.assets.resident.defined_tags
   freeform_tags  = var.assets.resident.freeform_tags
@@ -12,10 +12,10 @@ resource "oci_kms_vault" "wallet" {
 resource "oci_kms_key" "wallet" {
   depends_on = [oci_kms_vault.wallet]
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
-  display_name   = var.wallet.key.name
+  display_name   = var.encryption.key.name
   key_shape {
-    algorithm = var.wallet.key.algorithm
-    length    = var.wallet.key.length
+    algorithm = var.encryption.key.algorithm
+    length    = var.encryption.key.length
   }
   management_endpoint = oci_kms_vault.wallet.management_endpoint
   defined_tags        = var.assets.resident.defined_tags
@@ -27,19 +27,19 @@ resource "oci_kms_sign" "wallet" {
   depends_on        = [oci_kms_vault.wallet, oci_kms_key]
   crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
   key_id            = oci_kms_key.wallet.id
-  message           = var.wallet.signature.message
-  signing_algorithm = var.wallet.signature.algorithm
-  message_type      = var.wallet.signature.type
+  message           = var.encryption.signature.message
+  signing_algorithm = var.encryption.signature.algorithm
+  message_type      = var.encryption.signature.type
 }
 
 resource "oci_kms_verify" "wallet" {
   depends_on        = [oci_kms_vault.wallet, oci_kms_key, oci_kms_sign.wallet]
   crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
   key_id            = oci_kms_key.wallet.id
-  message           = var.wallet.signature.message
-  signing_algorithm = var.wallet.signature.algorithm
+  message           = var.encryption.signature.message
+  signing_algorithm = var.encryption.signature.algorithm
   signature         = oci_kms_sign.wallet.signature
-  message_type      = var.wallet.signature.type
+  message_type      = var.encryption.signature.type
 }
 
 resource "oci_vault_secret" "wallet" {
