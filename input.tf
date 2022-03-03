@@ -23,7 +23,6 @@ variable "tenancy" {
 variable "assets" {
   type = object({
     resident = any
-    network  = any
   })
   description = "Retrieve asset identifier"
 }
