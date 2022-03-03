@@ -38,7 +38,7 @@ resource "oci_kms_verify" "wallet" {
   crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
   key_id            = oci_kms_key.wallet.id
   key_version_id    = data.oci_kms_key_versions.wallet.key_versions[0].id
-  message           = var.encryption.signature.message
+  message           = base64encode(var.encryption.signature.message)
   signing_algorithm = var.encryption.signature.algorithm
   signature         = oci_kms_sign.wallet.signature
   message_type      = var.encryption.signature.type
@@ -55,7 +55,7 @@ resource "oci_vault_secret" "wallet" {
   key_id         = oci_kms_key.wallet.id
   secret_content {
     content_type = "BASE64"
-    content      = base64encode("${var.input.phrase}")
+    content      = base64encode(var.input.phrase)
     name         = var.input.secret
     stage        = "CURRENT"
   }
