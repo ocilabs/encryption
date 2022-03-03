@@ -25,12 +25,12 @@ data "oci_vault_secrets" "wallet" {
   vault_id       = oci_kms_vault.wallet.id
 }
 
+/*
 data "oci_vault_secret" "wallet" {
   depends_on = [oci_kms_key.wallet]
   secret_id  = oci_vault_secret.wallet.id
 }
 
-/*
 data "oci_secrets_secretbundle_versions" "wallet" {
   depends_on = [oci_kms_key.wallet]
   secret_id  = oci_vault_secret.wallet.id
