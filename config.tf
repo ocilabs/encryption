@@ -42,7 +42,11 @@ data "oci_secrets_secretbundle" "wallet" {
   stage      = "CURRENT"
 }
 
-locals {}
+data "oci_kms_key_versions" "wallet" {
+    depends_on          = [oci_kms_key.wallet]
+    key_id              = oci_kms_key.wallet.id
+    management_endpoint = oci_kms_vault.wallet.management_endpoint
+}
 
 // Define the wait state for the data requests
 resource "null_resource" "previous" {}
