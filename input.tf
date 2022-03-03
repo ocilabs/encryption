@@ -50,8 +50,8 @@ variable "encryption" {
     compartment = string,
     vault       = string,
     stage       = number,
-    key         = any,
-    signature   = any
+    key         = map(string),
+    signature   = map(string)
   })
   description = "Enabling enryption for a service resident"
 }
