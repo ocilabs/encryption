@@ -1,0 +1,194 @@
+== Requirements
+
+No requirements.
+
+== Providers
+
+The following providers are used by this module:
+
+- [[provider_oci]] <<provider_oci,oci>>
+
+- [[provider_null]] <<provider_null,null>>
+
+- [[provider_time]] <<provider_time,time>>
+
+== Modules
+
+[source]
+----
+// --- wallet configuration --- //
+module "encryption" {
+  source    = "github.com/ocilabs/encryption"
+  depends_on = [module.configuration, module.resident]
+  providers = {oci = oci.service}
+  tenancy   = module.configuration.tenancy
+  resident  = module.configuration.resident
+  wallet    = module.configuration.wallet
+  input = {
+    type   = var.wallet_type == "Software" ? "DEFAULT" : "VIRTUAL_PRIVATE"
+    secret = var.secret_name
+    phrase = var.secret_phrase
+  }
+  assets = {
+    resident = module.resident
+  }
+}
+output "wallet" {
+  value = {
+    for resource, parameter in module.encryption : resource => parameter
+  }
+}
+// --- wallet configuration --- //
+----
+
+== Resources
+
+The following resources are used by this module:
+
+- https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.previous] (resource)
+- https://registry.terraform.io/providers/hashicorp/oci/latest/docs/resources/kms_key[oci_kms_key.wallet] (resource)
+- https://registry.terraform.io/providers/hashicorp/oci/latest/docs/resources/kms_sign[oci_kms_sign.wallet] (resource)
+- https://registry.terraform.io/providers/hashicorp/oci/latest/docs/resources/kms_vault[oci_kms_vault.wallet] (resource)
+- https://registry.terraform.io/providers/hashicorp/oci/latest/docs/resources/kms_verify[oci_kms_verify.wallet] (resource)
+- https://registry.terraform.io/providers/hashicorp/oci/latest/docs/resources/vault_secret[oci_vault_secret.wallet] (resource)
+- https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep[time_sleep.wait] (resource)
+- https://registry.terraform.io/providers/hashicorp/oci/latest/docs/data-sources/identity_compartments[oci_identity_compartments.security] (data source)
+- https://registry.terraform.io/providers/hashicorp/oci/latest/docs/data-sources/secrets_secretbundle[oci_secrets_secretbundle.wallet] (data source)
+- https://registry.terraform.io/providers/hashicorp/oci/latest/docs/data-sources/secrets_secretbundle_versions[oci_secrets_secretbundle_versions.wallet] (data source)
+- https://registry.terraform.io/providers/hashicorp/oci/latest/docs/data-sources/vault_secret[oci_vault_secret.wallet] (data source)
+- https://registry.terraform.io/providers/hashicorp/oci/latest/docs/data-sources/vault_secrets[oci_vault_secrets.wallet] (data source)
+
+== Required Inputs
+
+The following input variables are required:
+
+=== [[input_input]] <<input_input,input>>
+
+Description: Schema input for the wallet creation
+
+Type:
+[source,hcl]
+----
+object({
+      type   = string,
+      secret = string,
+      phrase = string
+    })
+----
+
+=== [[input_tenancy]] <<input_tenancy,tenancy>>
+
+Description: Tenancy Configuration
+
+Type:
+[source,hcl]
+----
+object({
+    id      = string,
+    class   = number,
+    buckets = string,
+    region  = map(string)
+  })
+----
+
+=== [[input_assets]] <<input_assets,assets>>
+
+Description: Retrieve asset identifier
+
+Type:
+[source,hcl]
+----
+object({
+    resident = any
+    network  = any
+  })
+----
+
+=== [[input_resident]] <<input_resident,resident>>
+
+Description: Service configuration
+
+Type:
+[source,hcl]
+----
+object({
+    owner          = string,
+    name           = string,
+    label          = string,
+    stage          = number,
+    region         = map(string)
+    compartments   = map(number),
+    repository     = string,
+    groups         = map(string),
+    policies       = map(any),
+    notifications  = map(any),
+    tag_namespaces = map(number),
+    tags           = any
+  })
+----
+
+=== [[input_network]] <<input_network,network>>
+
+Description: Creating a network topology for a service resident
+
+Type:
+[source,hcl]
+----
+object({
+    name         = string,
+    region       = string,
+    display_name = string,
+    dns_label    = string,
+    compartment  = string,
+    stage        = number,
+    cidr         = string,
+    gateways     = any,
+    route_tables = map(any),
+    subnets      = map(any),
+    security_lists = any
+  })
+----
+
+=== [[input_wallet]] <<input_wallet,wallet>>
+
+Description: Enabling enryption for a service resident
+
+Type:
+[source,hcl]
+----
+object({
+    compartment = string,
+    vault       = string,
+    stage       = number,
+    key         = map(string),
+    signature   = map(string),
+  })
+----
+
+== Optional Inputs
+
+No optional inputs.
+
+== Outputs
+
+The following outputs are exported:
+
+=== [[output_compartment_id]] <<output_compartment_id,compartment_id>>
+
+Description: OCID for the security compartment
+
+=== [[output_vault_id]] <<output_vault_id,vault_id>>
+
+Description: Identifier for the key management service (KMS) vault
+
+=== [[output_key_id]] <<output_key_id,key_id>>
+
+Description: Identifier for the master key, created for the vault
+
+=== [[output_wallet_signature]] <<output_wallet_signature,wallet_signature>>
+
+Description: n/a
+
+=== [[output_secret_id]] <<output_secret_id,secret_id>>
+
+Description: n/a
