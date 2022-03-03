@@ -44,6 +44,7 @@ resource "oci_kms_verify" "wallet" {
   message_type      = var.encryption.signature.type
 }
 
+/*
 resource "oci_vault_secret" "wallet" {
   depends_on = [oci_kms_vault.wallet, oci_kms_key.wallet, oci_kms_sign.wallet, oci_kms_verify.wallet]
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
@@ -60,3 +61,4 @@ resource "oci_vault_secret" "wallet" {
     stage        = "CURRENT"
   }
 }
+*/
