@@ -3,7 +3,7 @@
 
 resource "oci_kms_vault" "wallet" {
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
-  display_name   = var.wallet.display_name
+  display_name   = var.wallet.vault
   vault_type     = var.input.type
   defined_tags   = var.assets.resident.defined_tags
   freeform_tags  = var.assets.resident.freeform_tags
@@ -12,10 +12,10 @@ resource "oci_kms_vault" "wallet" {
 resource "oci_kms_key" "wallet" {
   depends_on = [oci_kms_vault.wallet]
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
-  display_name   = "${var.wallet.display_name}_key"
+  display_name   = var.wallet.key.name
   key_shape {
-    algorithm = var.wallet.algorithm
-    length    = var.wallet.length
+    algorithm = var.wallet.key.algorithm
+    length    = var.wallet.key.length
   }
   management_endpoint = oci_kms_vault.wallet.management_endpoint
   defined_tags        = var.assets.resident.defined_tags
@@ -27,25 +27,25 @@ resource "oci_kms_sign" "wallet" {
   depends_on        = [oci_kms_vault.wallet, oci_kms_key]
   crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
   key_id            = oci_kms_key.wallet.id
-  message           = var.input.message
-  signing_algorithm = var.wallet.algorithm == "RSA" ? "SHA_256_RSA_PKCS_PSS" : "ECDSA_SHA_256"
-  message_type      = "RAW"
+  message           = var.wallet.signature.message
+  signing_algorithm = var.wallet.signature.algorithm
+  message_type      = var.wallet.signature.type
 }
 
 resource "oci_kms_verify" "wallet" {
   depends_on        = [oci_kms_vault.wallet, oci_kms_key, oci_kms_sign.wallet]
   crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
   key_id            = oci_kms_key.wallet.id
-  message           = var.input.message
-  signing_algorithm = var.wallet.algorithm == "RSA" ? "SHA_256_RSA_PKCS_PSS" : "ECDSA_SHA_256"
+  message           = var.wallet.signature.message
+  signing_algorithm = var.wallet.signature.algorithm
   signature         = oci_kms_sign.wallet.signature
-  message_type      = "RAW"
+  message_type      = var.wallet.signature.type
 }
 
 resource "oci_vault_secret" "wallet" {
   depends_on = [oci_kms_vault.wallet, oci_kms_key, oci_kms_sign.wallet, oci_kms_verify.wallet]
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
-  secret_name    = oci_vault_secret.wallet.name
+  secret_name    = "${oci_vault_secret.wallet.name}_${var.input.secret}"
   vault_id       = oci_kms_vault.wallet.id
   defined_tags   = var.assets.resident.defined_tags
   freeform_tags  = var.assets.resident.freeform_tags

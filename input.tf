@@ -43,7 +43,7 @@ variable "resident" {
     tag_namespaces = map(number),
     tags           = any
   })
-  description = "Service Configuration"
+  description = "Service configuration"
 }
 
 variable "network" {
@@ -60,17 +60,16 @@ variable "network" {
     subnets      = map(any),
     security_lists = any
   })
-  description = "Network Configuration"
+  description = "Creating a network topology for a service resident"
 }
 
 variable "wallet" {
   type = object({
-    name         = string,
-    display_name = string,
-    compartment  = string,
-    stage        = number,
-    algorithm    = string,
-    length       = string
+    compartment = string,
+    vault       = string,
+    stage       = number,
+    key         = map(string),
+    signature   = map(string),
   })
-  description = "Wallet Configuration"
+  description = "Enabling enryption for a service resident"
 }
