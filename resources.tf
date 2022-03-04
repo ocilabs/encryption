@@ -43,22 +43,3 @@ resource "oci_kms_verify" "wallet" {
   signature         = oci_kms_sign.wallet.signature
   message_type      = var.encryption.signature.type
 }
-
-/*
-resource "oci_vault_secret" "wallet" {
-  depends_on = [oci_kms_vault.wallet, oci_kms_key.wallet, oci_kms_sign.wallet, oci_kms_verify.wallet]
-  compartment_id = data.oci_identity_compartments.security.compartments[0].id
-  secret_name    = "${oci_kms_vault.wallet.display_name}_${var.input.secret}"
-  vault_id       = oci_kms_vault.wallet.id
-  defined_tags   = var.assets.resident.defined_tags
-  freeform_tags  = var.assets.resident.freeform_tags
-  description    = "Secret in the ${oci_kms_vault.wallet.display_name} wallet"
-  key_id         = oci_kms_key.wallet.id
-  secret_content {
-    content_type = "BASE64"
-    content      = base64encode(var.input.phrase)
-    name         = var.input.secret
-    stage        = "CURRENT"
-  }
-}
-*/

@@ -4,8 +4,6 @@
 variable "input" {
     type = object({
       type   = string,
-      secret = string,
-      phrase = string
     })
     description = "Schema input for the wallet creation"
 }
