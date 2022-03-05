@@ -1,9 +1,9 @@
 # Copyright (c) 2020 Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-/*
 resource "oci_vault_secret" "wallet" {
-  depends_on = [oci_kms_vault.wallet, oci_kms_key.wallet, oci_kms_sign.wallet, oci_kms_verify.wallet]
+  depends_on     = [oci_kms_vault.wallet, oci_kms_key.wallet]
+  for_each       = var.encryption.secrets
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   secret_name    = "${oci_kms_vault.wallet.display_name}_${var.input.secret}"
   vault_id       = oci_kms_vault.wallet.id
@@ -13,12 +13,14 @@ resource "oci_vault_secret" "wallet" {
   key_id         = oci_kms_key.wallet.id
   secret_content {
     content_type = "BASE64"
-    content      = base64encode(var.input.phrase)
-    name         = var.input.secret
+    content      = base64encode(each.value.phrase)
+    name         = each.value.name
     stage        = "CURRENT"
   }
 }
 
+
+/*
 data "oci_vault_secret" "wallet" {
   depends_on = [oci_kms_key.wallet]
   secret_id  = oci_vault_secret.wallet.id

@@ -22,24 +22,3 @@ resource "oci_kms_key" "wallet" {
   freeform_tags       = var.assets.resident.freeform_tags
   protection_mode     = var.input.type == "DEFAULT" ? "SOFTWARE" : "HSM"
 }
-
-resource "oci_kms_sign" "wallet" {
-  depends_on        = [oci_kms_vault.wallet, oci_kms_key.wallet]
-  crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
-  key_id            = oci_kms_key.wallet.id
-  key_version_id    = data.oci_kms_key_versions.wallet.key_versions[0].id
-  message           = var.encryption.signature.message
-  signing_algorithm = var.encryption.signature.algorithm
-  message_type      = var.encryption.signature.type
-}
-
-resource "oci_kms_verify" "wallet" {
-  depends_on        = [oci_kms_vault.wallet, oci_kms_key.wallet, oci_kms_sign.wallet]
-  crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
-  key_id            = oci_kms_key.wallet.id
-  key_version_id    = data.oci_kms_key_versions.wallet.key_versions[0].id
-  message           = var.encryption.signature.message
-  signing_algorithm = var.encryption.signature.algorithm
-  signature         = oci_kms_sign.wallet.signature
-  message_type      = var.encryption.signature.type
-}
