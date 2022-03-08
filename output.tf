@@ -16,6 +16,7 @@ output "key_id" {
   value       = length(oci_kms_key.wallet) > 0 ? oci_kms_key.wallet.id : null
 }
 
-output "wallet_signature" {
-  value = length(oci_kms_sign.wallet) > 0 ? oci_kms_sign.wallet.signature : null
+output "signatures" {
+  description = "A list of signatures created by the encryption module."
+  value       = { for signature in oci_kms_sign.wallet : signature.signature => signature.signing_algorithm }
 }
