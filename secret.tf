@@ -5,7 +5,7 @@ resource "oci_vault_secret" "wallet" {
   depends_on     = [oci_kms_vault.wallet, oci_kms_key.wallet]
   for_each       = var.encryption.secrets
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
-  secret_name    = "${oci_kms_vault.wallet.display_name}_${var.input.secret}"
+  secret_name    = "${oci_kms_vault.wallet.display_name}_${each.value.name}"
   vault_id       = oci_kms_vault.wallet.id
   defined_tags   = var.assets.resident.defined_tags
   freeform_tags  = var.assets.resident.freeform_tags
