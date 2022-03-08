@@ -48,7 +48,7 @@ variable "encryption" {
     compartment = string,
     vault       = string,
     stage       = number,
-    key         = map(any),
+    key         = any,
     signatures  = any,
     secrets     = any
   })
