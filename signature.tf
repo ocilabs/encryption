@@ -12,6 +12,7 @@ resource "oci_kms_sign" "wallet" {
   message_type      = each.value.type
 }
 
+/*
 resource "oci_kms_verify" "wallet" {
   depends_on        = [oci_kms_vault.wallet, oci_kms_key.wallet, oci_kms_sign.wallet]
   for_each          = oci_kms_sign.wallet
@@ -23,3 +24,4 @@ resource "oci_kms_verify" "wallet" {
   message           = each.value.message
   message_type      = each.value.message_type
 }
+*/

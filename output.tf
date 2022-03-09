@@ -18,5 +18,5 @@ output "key_id" {
 
 output "signatures" {
   description = "A list of signatures created by the encryption module."
-  value       = { for signature in oci_kms_sign.wallet : signature.signature => signature.signing_algorithm }
+  value       = { for signature in oci_kms_sign.wallet : signature.signature => signature }
 }
