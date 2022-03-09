@@ -14,7 +14,7 @@ resource "oci_kms_sign" "wallet" {
 
 resource "oci_kms_verify" "wallet" {
   depends_on        = [oci_kms_vault.wallet, oci_kms_key.wallet, oci_kms_sign.wallet]
-  for_each          = oci_kms_sign.wallet
+  for_each          = var.encryption.signatures
   crypto_endpoint   = oci_kms_vault.wallet.crypto_endpoint
   key_id            = oci_kms_key.wallet.id
   key_version_id    = data.oci_kms_key_versions.wallet.key_versions[0].id
