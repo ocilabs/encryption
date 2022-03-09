@@ -8,12 +8,12 @@ output "compartment_id" {
 
 output "vault_id" {
   description = "Identifier for the key management service (KMS) vault"
-  value       = length(oci_kms_vault.wallet) > 0 ? oci_kms_vault.wallet.id : null
+  value       = length(oci_kms_vault.wallet) > 0 ? oci_kms_vault.wallet[0].id : null
 }
 
 output "key_id" {
   description = "Identifier for the master key, created for the vault"
-  value       = length(oci_kms_key.wallet) > 0 ? oci_kms_key.wallet.id : null
+  value       = length(oci_kms_key.wallet) > 0 ? oci_kms_key.wallet[0].id : null
 }
 
 output "signatures" {
