@@ -3,14 +3,14 @@
 
 resource "oci_vault_secret" "wallet" {
   depends_on     = [oci_kms_vault.wallet, oci_kms_key.wallet]
-  for_each       = var.encryption.secrets
+  for_each       = var.input.create == true ? var.encryption.secrets  : []
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   secret_name    = "${oci_kms_vault.wallet.display_name}_${each.value.name}"
-  vault_id       = oci_kms_vault.wallet.id
+  vault_id       = oci_kms_vault.wallet[0].id
   defined_tags   = var.assets.resident.defined_tags
   freeform_tags  = var.assets.resident.freeform_tags
   description    = "Secret in the ${oci_kms_vault.wallet.display_name} wallet"
-  key_id         = oci_kms_key.wallet.id
+  key_id         = oci_kms_key.wallet[0].id
   secret_content {
     content_type = "BASE64"
     content      = base64encode(each.value.phrase)
