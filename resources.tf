@@ -3,7 +3,7 @@
 
 resource "oci_kms_vault" "wallet" {
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
-  count          = var.input.create ? 1 : 0
+  count          = local.wallet_count
   display_name   = var.encryption.vault
   vault_type     = var.input.type
   defined_tags   = var.assets.resident.defined_tags
@@ -13,7 +13,7 @@ resource "oci_kms_vault" "wallet" {
 resource "oci_kms_key" "wallet" {
   depends_on = [oci_kms_vault.wallet]
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
-  count          = var.input.create ? 1 : 0
+  count          = local.wallet_count
   display_name   = var.encryption.key.name
   key_shape {
     algorithm = var.encryption.key.algorithm
