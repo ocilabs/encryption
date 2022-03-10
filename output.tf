@@ -15,8 +15,3 @@ output "key_id" {
   description = "Identifier for the master key, created for the vault"
   value       = length(oci_kms_key.wallet) > 0 ? oci_kms_key.wallet[0].id : null
 }
-
-output "signatures" {
-  description = "A list of signatures created by the encryption module."
-  value       = { for signature in oci_kms_sign.wallet : signature.signature => signature }
-}
