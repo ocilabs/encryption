@@ -3,7 +3,7 @@
 
 
 resource "random_password" "wallet" {
-  count       = length(var.encryption.secrets)
+  count       = 2
   length      = 16
   min_numeric = 1
   min_lower   = 1

@@ -17,6 +17,10 @@ output "key_id" {
 }
 
 output "sercret" {
-  value = random_password.wallet
+  value = random_password.wallet[*].result
   sensitive = true 
+}
+
+output "nr_of_secrets" {
+  value = length(var.encryption.secrets)
 }
