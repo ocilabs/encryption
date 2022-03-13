@@ -22,5 +22,5 @@ output "sercret" {
 }
 
 output "nr_of_secrets" {
-  value = length(keys(var.encryption.passwords))
+  value = length(var.encryption.passwords)
 }
