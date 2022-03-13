@@ -52,7 +52,7 @@ variable "encryption" {
     key         = map(any),
     signatures  = map(any),
     secrets     = map(any),
-    passwords   = map(any)
+    passwords   = list(string)
   })
   description = "Enabling enryption for a service resident"
 }
