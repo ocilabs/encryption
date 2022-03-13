@@ -17,6 +17,6 @@ output "key_id" {
 }
 
 output "sercrets" {
-  value = {for password in var.encryption.passwords : each.value.name => random_password.wallet[index(keys(var.encryption.passwords), password.name)].result}
+  value = {for password in values(var.encryption.passwords) : password.name => random_password.wallet[index(keys(var.encryption.passwords), password.name)].result}
   sensitive = true 
 }
