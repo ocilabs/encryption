@@ -18,4 +18,5 @@ output "key_id" {
 
 output "sercret" {
   value = random_password.wallet
+  sensitive = true 
 }
