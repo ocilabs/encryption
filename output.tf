@@ -16,7 +16,7 @@ output "key_id" {
   value       = length(oci_kms_key.wallet) > 0 ? oci_kms_key.wallet[0].id : null
 }
 
-output "sercrets" {
+output "passwords" {
   value = {for password in var.encryption.passwords : password => random_password.wallet[index(var.encryption.passwords, password)].result}
   sensitive = true 
 }
