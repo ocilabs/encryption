@@ -15,3 +15,7 @@ output "key_id" {
   description = "Identifier for the master key, created for the vault"
   value       = length(oci_kms_key.wallet) > 0 ? oci_kms_key.wallet[0].id : null
 }
+
+output "sercret" {
+  value = random_password.wallet
+}
