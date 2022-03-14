@@ -17,6 +17,6 @@ output "key_id" {
 }
 
 output "passwords" {
-  value = {for password in var.encryption.passwords : password => random_password.wallet[index(var.encryption.passwords, password)].result}
+  value = {for password in var.encryption.passwords : "${password}_password" => random_password.wallet[index(var.encryption.passwords, password)].result}
   sensitive = true 
 }
