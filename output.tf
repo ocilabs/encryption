@@ -20,3 +20,7 @@ output "passwords" {
   value = {for password in var.encryption.passwords : password => random_password.wallet[index(var.encryption.passwords, password)].result}
   sensitive = true 
 }
+
+output "secret_id" {
+  value = length(oci_vault_secret.wallet) > 0 ? oci_vault_secret.wallet.id : null
+}
