@@ -22,5 +22,5 @@ output "passwords" {
 }
 
 output "secret_id" {
-  value       = {for secret in oci_vault_secret.wallet[*] : secret.name => secret.id}
+  value       = {for secret in oci_vault_secret.wallet[*] : secret.secret_name => secret.id}
 }
