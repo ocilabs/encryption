@@ -1,15 +1,6 @@
 # Copyright (c) 2020 Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-resource "random_password" "wallet" {
-  count       = length(var.encryption.passwords)
-  length      = 16
-  min_numeric = 1
-  min_lower   = 1
-  min_upper   = 1
-  min_special = 1
-}
-
 resource "oci_kms_vault" "wallet" {
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   count          = local.wallet_count
@@ -53,4 +44,13 @@ resource "oci_vault_secret" "wallet" {
     name         = each.value.name
     stage        = "CURRENT"
   }
+}
+
+resource "random_password" "wallet" {
+  count       = length(var.encryption.passwords)
+  length      = 16
+  min_numeric = 1
+  min_lower   = 1
+  min_upper   = 1
+  min_special = 1
 }
