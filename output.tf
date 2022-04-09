@@ -11,6 +11,11 @@ output "vault_id" {
   value       = length(oci_kms_vault.wallet) > 0 ? oci_kms_vault.wallet[0].id : null
 }
 
+output "vault_type" {
+  description = "Type of key management service (KMS) vault"
+  value       = var.input.type
+}
+
 output "key_id" {
   description = "Identifier for the master key, created for the vault"
   value       = length(oci_kms_key.wallet) > 0 ? oci_kms_key.wallet[0].id : null
