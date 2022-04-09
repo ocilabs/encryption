@@ -22,5 +22,5 @@ output "passwords" {
 }
 
 output "secret_id" {
-  value = length(oci_vault_secret.wallet) > 0 ? oci_vault_secret.wallet.id : null
+  value       = {for secret in oci_vault_secret.wallet[*] : secret.name => secret.id}
 }
