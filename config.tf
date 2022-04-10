@@ -37,6 +37,7 @@ data "oci_kms_key_versions" "wallet" {
   management_endpoint = oci_kms_vault.wallet[count.index].management_endpoint
 }
 
+/*
 data "oci_secrets_secretbundle" "wallet" {
   depends_on = [
     oci_vault_secret.wallet
@@ -44,7 +45,7 @@ data "oci_secrets_secretbundle" "wallet" {
   for_each = oci_vault_secret.wallet.*.id
   secret_id = each.key
 }
-
+*/
 
 locals {
   wallet_count = var.config.create ? 1 : 0
