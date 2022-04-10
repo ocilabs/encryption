@@ -17,7 +17,7 @@ data "oci_identity_compartments" "security" {
   name           = try(var.input.encryption.compartment, var.input.service.name)
   state          = "ACTIVE"
 }
-
+/*
 data "oci_vault_secrets" "wallet" {
   depends_on     = [oci_kms_vault.wallet]
   count          = local.wallet_count
@@ -33,6 +33,10 @@ data "oci_kms_key_versions" "wallet" {
   management_endpoint = oci_kms_vault.wallet[count.index].management_endpoint
 }
 
+data "oci_secrets_secretbundle" "wallet" {
+  secret_id = oci_vault_secret.wallet.id
+}
+*/
 locals {
   wallet_count = var.config.create ? 1 : 0
 }

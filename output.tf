@@ -16,6 +16,7 @@ output "vault_type" {
   value       = var.config.type
 }
 
+/*
 output "key_id" {
   description = "Identifier for the master key, created for the vault"
   value       = length(oci_kms_key.wallet) > 0 ? oci_kms_key.wallet[0].id : null
@@ -30,3 +31,4 @@ output "secret_id" {
   description = "A list of secrets defined for the resident."
   value       = {for secret in oci_vault_secret.wallet : secret.secret_name => secret.id}
 }
+*/
