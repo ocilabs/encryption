@@ -4,8 +4,8 @@
 variable "options" {
   description = "optional flags, retrieved from the schema file"
   type = object({
-    create   = bool,
-    password = string
+      type   = string,
+      create = bool
   })
 }
 
