@@ -26,7 +26,7 @@ output "passwords" {
   sensitive = true 
 }
 
-output "secret_id" {
+output "secret_ids" {
   description = "A list of secrets defined for the resident."
   value       = local.secret_map
 }
