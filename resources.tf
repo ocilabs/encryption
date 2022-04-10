@@ -4,8 +4,8 @@
 resource "oci_kms_vault" "wallet" {
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   count          = local.wallet_count
-  display_name   = var.encryption.vault
-  vault_type     = var.input.type
+  display_name   = var.input.encryption.vault
+  vault_type     = var.options.type
   defined_tags   = var.assets.resident.defined_tags
   freeform_tags  = var.assets.resident.freeform_tags
 }
@@ -14,15 +14,15 @@ resource "oci_kms_key" "wallet" {
   depends_on = [oci_kms_vault.wallet]
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   count          = local.wallet_count
-  display_name   = var.encryption.key.name
+  display_name   = var.input.encryption.key.name
   key_shape {
-    algorithm = var.encryption.key.algorithm
-    length    = var.encryption.key.length
+    algorithm = var.input.encryption.key.algorithm
+    length    = var.input.encryption.key.length
   }
   management_endpoint = oci_kms_vault.wallet[0].management_endpoint
   defined_tags        = var.assets.resident.defined_tags
   freeform_tags       = var.assets.resident.freeform_tags
-  protection_mode     = var.input.type == "DEFAULT" ? "SOFTWARE" : "HSM"
+  protection_mode     = var.options.type == "DEFAULT" ? "SOFTWARE" : "HSM"
 }
 
 resource "oci_vault_secret" "wallet" {
@@ -30,7 +30,7 @@ resource "oci_vault_secret" "wallet" {
     oci_kms_vault.wallet, 
     oci_kms_key.wallet
   ]
-  for_each       = var.input.create == true ? var.encryption.secrets  : {}
+  for_each       = var.options.create == true ? var.input.encryption.secrets  : {}
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   secret_name    = "${oci_kms_vault.wallet[0].display_name}_${each.value.name}"
   vault_id       = oci_kms_vault.wallet[0].id
@@ -47,7 +47,7 @@ resource "oci_vault_secret" "wallet" {
 }
 
 resource "random_password" "wallet" {
-  count       = length(var.encryption.passwords)
+  count       = length(var.input.encryption.passwords)
   length      = 16
   min_numeric = 1
   min_lower   = 1

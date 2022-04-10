@@ -11,10 +11,10 @@ terraform {
 }
 
 data "oci_identity_compartments" "security" {
-  compartment_id = var.tenancy.id
+  compartment_id = var.input.tenancy.id
   access_level   = "ANY"
   compartment_id_in_subtree = true
-  name           = try(var.encryption.compartment, var.resident.name)
+  name           = try(var.input.encryption.compartment, var.input.service.name)
   state          = "ACTIVE"
 }
 
@@ -34,7 +34,7 @@ data "oci_kms_key_versions" "wallet" {
 }
 
 locals {
-  wallet_count = var.input.create ? 1 : 0
+  wallet_count = var.options.create ? 1 : 0
 }
 
 // Define the wait state for the data requests

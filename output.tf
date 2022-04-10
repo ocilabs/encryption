@@ -13,7 +13,7 @@ output "vault_id" {
 
 output "vault_type" {
   description = "Type of key management service (KMS) vault"
-  value       = var.input.type
+  value       = var.options.type
 }
 
 output "key_id" {
@@ -22,7 +22,7 @@ output "key_id" {
 }
 
 output "passwords" {
-  value = {for password in var.encryption.passwords : password => random_password.wallet[index(var.encryption.passwords, password)].result}
+  value = {for password in var.input.encryption.passwords : password => random_password.wallet[index(var.input.encryption.passwords, password)].result}
   sensitive = true 
 }
 
