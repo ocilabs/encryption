@@ -28,9 +28,9 @@ output "passwords" {
 
 output "secret_id" {
   description = "A list of secrets defined for the resident."
-  value       = {for secret in oci_vault_secret.wallet : secret.secret_name => secret.id}
+  value       = local.secret_map
 }
 
 output "secret_content" {
-  value = oci_vault_secret.wallet[*]
+  value = local.secret_map["database"]
 }
