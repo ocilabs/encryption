@@ -32,7 +32,7 @@ resource "oci_vault_secret" "wallet" {
   ]
   for_each       = var.config.create == true ? var.input.encryption.secrets  : {}
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
-  secret_name    = "${oci_kms_vault.wallet[0].display_name}_${each.value.name}"
+  secret_name    = "${each.value.name}"
   vault_id       = oci_kms_vault.wallet[0].id
   defined_tags   = var.assets.resident.defined_tags
   freeform_tags  = var.assets.resident.freeform_tags
