@@ -33,9 +33,11 @@ data "oci_kms_key_versions" "wallet" {
   management_endpoint = oci_kms_vault.wallet[count.index].management_endpoint
 }
 
+/*
 data "oci_secrets_secretbundle" "wallet" {
   secret_id = oci_vault_secret.wallet.id
 }
+*/
 
 locals {
   wallet_count = var.config.create ? 1 : 0
