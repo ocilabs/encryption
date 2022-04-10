@@ -32,5 +32,5 @@ output "secret_id" {
 }
 
 output "secret_content" {
-  value = local.secret_map["${data.oci_identity_compartment.resident.name}_database_secret"]
+  value = data.oci_secrets_secretbundle.wallet
 }
