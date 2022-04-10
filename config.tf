@@ -10,6 +10,7 @@ terraform {
   }
 }
 
+data "oci_identity_compartment" "resident" {id = var.assets.resident.id}
 data "oci_identity_compartments" "security" {
   compartment_id = var.input.tenancy.id
   access_level   = "ANY"

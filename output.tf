@@ -32,5 +32,5 @@ output "secret_id" {
 }
 
 output "secret_content" {
-  value = local.secret_map["${data.oci_identity_compartments.security.compartments[0].name}_database_secret"]
+  value = local.secret_map["${data.oci_identity_compartment.resident.name}_database_secret"]
 }
