@@ -32,5 +32,5 @@ output "secret_id" {
 }
 
 output "secret_content" {
-  value = oci_vault_secret.wallet.secret_content.*.id
+  value = oci_vault_secret.wallet[*].id
 }
