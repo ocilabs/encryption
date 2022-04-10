@@ -32,5 +32,5 @@ output "secret_id" {
 }
 
 output "secret_content" {
-  value = data.oci_secrets_secretbundle.wallet
+  value = {for secret in data.oci_secrets_secretbundle.wallet: secret.version_name => secret.secret_bundle_content.content}
 }
