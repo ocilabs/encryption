@@ -13,7 +13,7 @@ output "vault_id" {
 
 output "vault_type" {
   description = "Type of key management service (KMS) vault"
-  value       = var.options.type
+  value       = var.config.type
 }
 
 output "key_id" {

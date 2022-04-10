@@ -34,7 +34,7 @@ data "oci_kms_key_versions" "wallet" {
 }
 
 locals {
-  wallet_count = var.options.create ? 1 : 0
+  wallet_count = var.config.create ? 1 : 0
 }
 
 // Define the wait state for the data requests
