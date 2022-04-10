@@ -32,5 +32,6 @@ output "secret_id" {
 }
 
 output "secret_content" {
-  value = {for secret in data.oci_secrets_secretbundle.wallet: secret.version_name => secret.secret_bundle_content}
+  #value = {for secret in data.oci_secrets_secretbundle.wallet: secret.version_name => secret.secret_bundle_content}
+  value = {for secret in data.oci_secrets_secretbundle.wallet: secret.version_name => base64decode(secret.secret_bundle_content.0.content)}
 }
