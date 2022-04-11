@@ -8,7 +8,7 @@ output "existing_secrets" {
 */
 
 output "existing_wallets" {
-  value = data.oci_kms_vaults.wallet
+  value = length(data.oci_kms_vaults.wallet.vaults) > 0 ? data.oci_kms_vaults.wallet.vaults[*].display_name : null
 }
 
 output "existing_secrets" {
