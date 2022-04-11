@@ -26,7 +26,7 @@ output "key_id" {
 }
 
 output "passwords" {
-  value = {for password in var.input.encryption.passwords : password => random_password.wallet[index(var.input.encryption.passwords, password)].result}
+  value = {for password in var.config.encryption.passwords : password => random_password.wallet[index(var.config.encryption.passwords, password)].result}
   sensitive = true 
 }
 

@@ -12,10 +12,10 @@ terraform {
 
 data "oci_identity_compartment" "resident" {id = var.assets.resident.id}
 data "oci_identity_compartments" "security" {
-  compartment_id = var.input.tenancy.id
+  compartment_id = var.config.tenancy.id
   access_level   = "ANY"
   compartment_id_in_subtree = true
-  name           = try(var.input.encryption.compartment, var.input.service.name)
+  name           = try(var.config.encryption.compartment, var.config.service.name)
   state          = "ACTIVE"
 }
 

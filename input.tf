@@ -9,7 +9,7 @@ variable "schema" {
   })
 }
 
-variable "input" {
+variable "config" {
   description = "Input parameter for the service configuration"
   type = object({
     tenancy    = any,

@@ -21,7 +21,7 @@ module "encryption" {
   resident  = module.configuration.resident
   wallet    = module.configuration.wallet
   input = {
-    type   = var.input.encryption_type == "Software" ? "DEFAULT" : "VIRTUAL_PRIVATE"
+    type   = var.config.encryption_type == "Software" ? "DEFAULT" : "VIRTUAL_PRIVATE"
     secret = var.secret_name
     phrase = var.secret_phrase
   }
