@@ -22,7 +22,7 @@ data "oci_identity_compartments" "security" {
 data "oci_vault_secrets" "wallet" {
   depends_on     = [
     oci_kms_vault.wallet,
-    oci_vault_secrets.wallet
+    oci_vault_secret.wallet
   ]
   count          = local.wallet_count
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
