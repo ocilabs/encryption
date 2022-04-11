@@ -2,7 +2,7 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 output "existing_secrets" {
-  value = data.oci_vault_secrets.wallet
+  value = data.oci_vault_secrets.wallet.secrets.secret_name
 }
 
 output "compartment_id" {
