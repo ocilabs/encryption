@@ -8,7 +8,7 @@ output "existing_secrets" {
 */
 
 output "existing_wallets" {
-  value = local.existing_wallets
+  value = data.oci_kms_vaults.wallet
 }
 
 output "existing_secrets" {
