@@ -28,12 +28,12 @@ data "oci_kms_vaults" "wallet" {
 
 data "oci_vault_secrets" "wallet" {
   depends_on     = [
-    data.oci_kms_vaults.wallet
+    oci_kms_vault.wallet
   ]
-  count          = length(data.oci_kms_vaults.wallet)
+  count          = local.wallet_count
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   state          = "ACTIVE"
-  vault_id       = data.oci_kms_vaults.wallet[count.index].id
+  vault_id       = oci_kms_vaults.wallet[count.index].id
 }
 
 data "oci_kms_key_versions" "wallet" {
