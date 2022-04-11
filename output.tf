@@ -12,7 +12,7 @@ output "existing_wallets" {
 }
 
 output "existing_secrets" {
-  value = data.oci_vault_secrets.wallet[*].secrets[*].secret_name
+  value = local.existing_secrets
 }
 
 output "compartment_id" {
