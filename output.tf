@@ -4,7 +4,7 @@
 output "existing_secrets" {
   value = data.oci_vault_secrets.wallet
 }
-/*
+
 output "compartment_id" {
   description = "OCID for the security compartment"
   value = data.oci_identity_compartments.security.compartments[0].id
@@ -38,4 +38,3 @@ output "secret_ids" {
 output "secret_content" {
   value = {for secret in data.oci_secrets_secretbundle.wallet: secret.version_name => base64decode(secret.secret_bundle_content.0.content)}
 }
-*/
