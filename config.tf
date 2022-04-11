@@ -30,10 +30,10 @@ data "oci_vault_secrets" "wallet" {
   depends_on     = [
     data.oci_kms_vaults.wallet
   ]
-  count          = local.wallet_count
+  count          = length(existing_wallets)
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   state          = "ACTIVE"
-  vault_id       = oci_kms_vault.wallet[count.index].id
+  vault_id       = data.oci_kms_vaults.wallet[count.index].id
 }
 
 data "oci_kms_key_versions" "wallet" {
@@ -56,7 +56,8 @@ data "oci_secrets_secretbundle" "wallet" {
 locals {
   wallet_count = var.schema.create ? 1 : 0
   secret_map   = {for secret in oci_vault_secret.wallet : secret.secret_name => secret.id}
-  #existing_secrets = [for index in local.wallet_count: length(data.oci_vault_secrets.wallet) > 0 ? data.oci_vault_secrets.wallet[index].secrets[*].secret_name : null]
+  existing_wallets = {for vault in data.oci_kms_vaults.wallet: vault.display_name => vault.id}
+  #existing_secrets = [for wallet in local.existing_wallets: length(data.oci_vault_secrets.wallet) > 0 ? data.oci_vault_secrets.wallet[index].secrets[*].secret_name : null]
 }
 
 // Define the wait state for the data requests

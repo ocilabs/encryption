@@ -28,7 +28,8 @@ resource "oci_kms_key" "wallet" {
 resource "oci_vault_secret" "wallet" {
   depends_on     = [
     oci_kms_vault.wallet, 
-    oci_kms_key.wallet
+    oci_kms_key.wallet,
+    data.oci_kms_vaults.wallet
   ]
   for_each       = var.schema.create == true ? var.config.encryption.secrets  : {}
   compartment_id = data.oci_identity_compartments.security.compartments[0].id

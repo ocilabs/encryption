@@ -8,7 +8,11 @@ output "existing_secrets" {
 */
 
 output "existing_wallets" {
-  value = data.oci_kms_vaults.wallet
+  value = local.existing_wallets
+}
+
+output "existing_secrets" {
+  value = data.oci_vault_secrets.wallet
 }
 
 output "compartment_id" {
