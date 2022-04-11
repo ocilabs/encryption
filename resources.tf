@@ -24,7 +24,7 @@ resource "oci_kms_key" "wallet" {
   freeform_tags       = var.assets.resident.freeform_tags
   protection_mode     = var.config.type == "DEFAULT" ? "SOFTWARE" : "HSM"
 }
-
+/*
 resource "oci_vault_secret" "wallet" {
   depends_on     = [
     oci_kms_vault.wallet, 
@@ -45,6 +45,7 @@ resource "oci_vault_secret" "wallet" {
     stage        = "CURRENT"
   }
 }
+*/
 
 resource "random_password" "wallet" {
   count       = length(var.input.encryption.passwords)
