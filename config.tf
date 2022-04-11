@@ -47,7 +47,7 @@ data "oci_secrets_secretbundle" "wallet" {
 }
 
 locals {
-  wallet_count = var.config.create ? 1 : 0
+  wallet_count = var.schema.create ? 1 : 0
   secret_map   = {for secret in oci_vault_secret.wallet : secret.secret_name => secret.id}
 }
 
