@@ -8,11 +8,11 @@ output "existing_secrets" {
 */
 
 output "existing_wallets" {
-  value = length(data.oci_kms_vaults.wallet.vaults) > 0 ? data.oci_kms_vaults.wallet.vaults[*].display_name : null
+  value = local.existing_wallets
 }
 
 output "existing_secrets" {
-  value = data.oci_vault_secrets.wallet
+  value = data.oci_vault_secrets.wallet[*]
 }
 
 output "compartment_id" {

@@ -56,7 +56,7 @@ data "oci_secrets_secretbundle" "wallet" {
 locals {
   wallet_count = var.schema.create ? 1 : 0
   secret_map   = {for secret in oci_vault_secret.wallet : secret.secret_name => secret.id}
-  #existing_wallets = {for vault in data.oci_kms_vaults.wallet: vault.display_name => vault.id}
+  existing_wallets = length(data.oci_kms_vaults.wallet.vaults) > 0 ? data.oci_kms_vaults.wallet.vaults[*].display_name : null
   #existing_secrets = [for wallet in local.existing_wallets: length(data.oci_vault_secrets.wallet) > 0 ? data.oci_vault_secrets.wallet[index].secrets[*].secret_name : null]
 }
 
