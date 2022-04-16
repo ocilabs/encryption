@@ -13,7 +13,7 @@ variable "configuration" {
   description = "Input parameter for the service configuration"
   type = object({
     tenancy    = any,
-    service    = any,
+    resident   = any,
     encryption = any
   })
 }
