@@ -21,7 +21,7 @@ output "vault_id" {
 
 output "vault_type" {
   description = "Type of key management service (KMS) vault"
-  value       = var.schema.type
+  value       = var.options.type
 }
 
 output "key_id" {
@@ -30,7 +30,7 @@ output "key_id" {
 }
 
 output "passwords" {
-  value = {for password in var.config.encryption.passwords : password => random_password.wallet[index(var.config.encryption.passwords, password)].result}
+  value = {for password in var.configuration.encryption.passwords : password => random_password.wallet[index(var.configuration.encryption.passwords, password)].result}
   sensitive = true 
 }
 

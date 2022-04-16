@@ -12,10 +12,10 @@ terraform {
 
 data "oci_identity_compartment" "resident" {id = var.assets.resident.id}
 data "oci_identity_compartments" "security" {
-  compartment_id = var.config.tenancy.id
+  compartment_id = var.configuration.tenancy.id
   access_level   = "ANY"
   compartment_id_in_subtree = true
-  name           = try(var.config.encryption.compartment, var.config.service.name)
+  name           = try(var.configuration.encryption.compartment, var.configuration.service.name)
   state          = "ACTIVE"
 }
 
@@ -54,7 +54,7 @@ data "oci_secrets_secretbundle" "wallet" {
 }
 
 locals {
-  wallet_count = var.schema.create ? 1 : 0
+  wallet_count = var.options.create ? 1 : 0
   secret_map   = {for secret in oci_vault_secret.wallet : secret.secret_name => secret.id}
   existing_wallets = length(data.oci_kms_vaults.wallet.vaults) > 0 ? zipmap(data.oci_kms_vaults.wallet.vaults[*].display_name, data.oci_kms_vaults.wallet.vaults[*].id) : null
   existing_secrets = length(data.oci_vault_secrets.wallet) > 0 ? zipmap(flatten(data.oci_vault_secrets.wallet[*].secrets[*].secret_name), flatten(data.oci_vault_secrets.wallet[*].secrets[*].id)) : null

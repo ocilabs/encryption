@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
-variable "schema" {
+variable "options" {
   description = "optional flags, retrieved from the schema file"
   type = object({
       type   = string,
@@ -9,7 +9,7 @@ variable "schema" {
   })
 }
 
-variable "config" {
+variable "configuration" {
   description = "Input parameter for the service configuration"
   type = object({
     tenancy    = any,

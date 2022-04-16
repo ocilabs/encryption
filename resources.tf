@@ -4,8 +4,8 @@
 resource "oci_kms_vault" "wallet" {
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   count          = local.wallet_count
-  display_name   = var.config.encryption.vault
-  vault_type     = var.schema.type
+  display_name   = var.configuration.encryption.vault
+  vault_type     = var.options.type
   defined_tags   = var.assets.resident.defined_tags
   freeform_tags  = var.assets.resident.freeform_tags
 }
@@ -17,15 +17,15 @@ resource "oci_kms_key" "wallet" {
   ]
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   count          = local.wallet_count
-  display_name   = var.config.encryption.key.name
+  display_name   = var.configuration.encryption.key.name
   key_shape {
-    algorithm = var.config.encryption.key.algorithm
-    length    = var.config.encryption.key.length
+    algorithm = var.configuration.encryption.key.algorithm
+    length    = var.configuration.encryption.key.length
   }
   management_endpoint = oci_kms_vault.wallet[0].management_endpoint
   defined_tags        = var.assets.resident.defined_tags
   freeform_tags       = var.assets.resident.freeform_tags
-  protection_mode     = var.schema.type == "DEFAULT" ? "SOFTWARE" : "HSM"
+  protection_mode     = var.options.type == "DEFAULT" ? "SOFTWARE" : "HSM"
 }
 
 resource "oci_vault_secret" "wallet" {
@@ -34,7 +34,7 @@ resource "oci_vault_secret" "wallet" {
     oci_kms_key.wallet,
     data.oci_vault_secrets.wallet
   ]
-  for_each       = var.schema.create == true ? var.config.encryption.secrets  : {}
+  for_each       = var.options.create == true ? var.configuration.encryption.secrets  : {}
   compartment_id = data.oci_identity_compartments.security.compartments[0].id
   secret_name    = "${each.value.name}"
   vault_id       = oci_kms_vault.wallet[0].id
@@ -51,7 +51,7 @@ resource "oci_vault_secret" "wallet" {
 }
 
 resource "random_password" "wallet" {
-  count       = length(var.config.encryption.passwords)
+  count       = length(var.configuration.encryption.passwords)
   length      = 16
   min_numeric = 1
   min_lower   = 1
