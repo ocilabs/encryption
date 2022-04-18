@@ -54,10 +54,15 @@ data "oci_secrets_secretbundle" "wallet" {
 }
 
 locals {
-  wallet_count = var.options.create ? 1 : 0
-  secret_map   = {for secret in oci_vault_secret.wallet : secret.secret_name => secret.id}
   existing_wallets = length(data.oci_kms_vaults.wallet.vaults) > 0 ? zipmap(data.oci_kms_vaults.wallet.vaults[*].display_name, data.oci_kms_vaults.wallet.vaults[*].id) : null
   existing_secrets = length(data.oci_vault_secrets.wallet) > 0 ? zipmap(flatten(data.oci_vault_secrets.wallet[*].secrets[*].secret_name), flatten(data.oci_vault_secrets.wallet[*].secrets[*].id)) : null
+  merged_freeform_tags = merge(local.module_freeform_tags, var.assets.resident.freeform_tags)
+  module_freeform_tags = {
+    # list of freeform tags, added to stack provided freeform tags
+    terraformed = "Please do not edit manually"
+  }
+  secret_map   = {for secret in oci_vault_secret.wallet : secret.secret_name => secret.id}
+  wallet_count = var.options.create ? 1 : 0
 }
 
 // Define the wait state for the data requests
