@@ -19,7 +19,7 @@ variable "options" {
 variable "configuration" {
   description = "Input parameter for the service configuration"
   type = object({
-    service    = any,
+    resident   = any,
     encryption = any
   })
 }
@@ -27,6 +27,6 @@ variable "configuration" {
 variable "assets" {
   description = "Retrieve asset identifier"
   type = object({
-    service   = any
+    resident = any
   })
 }
