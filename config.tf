@@ -10,12 +10,12 @@ terraform {
   }
 }
 
-data "oci_identity_compartment" "resident" {id = var.assets.resident.id}
+data "oci_identity_compartment" "resident" {id = var.assets.service.id}
 data "oci_identity_compartments" "security" {
-  compartment_id = var.configuration.tenancy.id
+  compartment_id = var.account.tenancy_id
   access_level   = "ANY"
   compartment_id_in_subtree = true
-  name           = try(var.configuration.encryption.compartment, var.configuration.resident.name)
+  name           = try(var.configuration.encryption.compartment, var.configuration.service.name)
   state          = "ACTIVE"
 }
 
@@ -56,7 +56,7 @@ data "oci_secrets_secretbundle" "wallet" {
 locals {
   existing_wallets = length(data.oci_kms_vaults.wallet.vaults) > 0 ? zipmap(data.oci_kms_vaults.wallet.vaults[*].display_name, data.oci_kms_vaults.wallet.vaults[*].id) : null
   existing_secrets = length(data.oci_vault_secrets.wallet) > 0 ? zipmap(flatten(data.oci_vault_secrets.wallet[*].secrets[*].secret_name), flatten(data.oci_vault_secrets.wallet[*].secrets[*].id)) : null
-  merged_freeform_tags = merge(local.module_freeform_tags, var.assets.resident.freeform_tags)
+  merged_freeform_tags = merge(local.module_freeform_tags, var.assets.service.freeform_tags)
   module_freeform_tags = {
     # list of freeform tags, added to stack provided freeform tags
     terraformed = "Please do not edit manually"
